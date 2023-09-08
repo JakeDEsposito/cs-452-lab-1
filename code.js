@@ -18,7 +18,7 @@ function draw() {
     const { sin, cos, PI } = Math
 
     const resolution = 100
-    const radius = 0.6
+    const radius = 0.4
     const circlePoints = []
     const angleStep = PI * 2 / resolution
     for (let i = 0; i < resolution; i++) {
@@ -48,7 +48,7 @@ function draw() {
     gl.vertexAttribPointer(myPosition, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(myPosition);
 
-    const colorBufferId = bindBufferData(vec3(1 / 255, 40 / 255, 107 / 255))
+    const colorBufferId = bindBufferData(Array(squarePoints.length).fill(vec3(1 / 255, 40 / 255, 107 / 255)))
 
     var myColor = gl.getAttribLocation(myShaderProgram, "myColor");
     gl.vertexAttribPointer(myColor, 3, gl.FLOAT, false, 0, 0)
@@ -56,8 +56,9 @@ function draw() {
 
     gl.drawArrays(gl.TRIANGLE_FAN, 0, squarePoints.length)
 
+    // draw circle
     bindBufferData(circlePoints, pointsBufferId)
-    bindBufferData(vec3(1, 1, 1), colorBufferId)
+    bindBufferData(Array(circlePoints.length).fill(vec3(1.0, 1.0, 1.0)), colorBufferId)
 
     gl.drawArrays(gl.TRIANGLE_FAN, 0, circlePoints.length)
 }
