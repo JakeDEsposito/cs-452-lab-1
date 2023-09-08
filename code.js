@@ -15,17 +15,36 @@ function draw() {
     // Force the WebGL context to clear the color buffer
     gl.clear(gl.COLOR_BUFFER_BIT);
 
-    const { sin, cos, PI } = Math
+    /**
+     * Creates the vertices for a circle.
+     * @param {number} resolution Number of vertices that the circle will be made of.
+     * @param {number} radius Radius of the circle.
+     * @param {number} x The horizontal position.
+     * @param {number} y The vertical position.
+     * @returns
+     */
+    function circleVertices(resolution, radius, x, y) {
+        const { sin, cos, PI } = Math
 
-    const resolution = 100
-    const radius = 0.4
-    const circlePoints = []
-    const angleStep = PI * 2 / resolution
-    for (let i = 0; i < resolution; i++) {
-        const currentAngle = i * angleStep
-        circlePoints.push(vec2(cos(currentAngle) * radius / aspectRatio, sin(currentAngle) * radius))
+        const angleStep = PI * 2 / resolution
+
+        const vertices = []
+
+        for (let i = 0; i < resolution; i++) {
+            const theta = i * angleStep
+
+            vertices.push(vec2((cos(theta) * radius + x) / aspectRatio, sin(theta) * radius + y))
+        }
+
+        return vertices
     }
 
+    /**
+     * Creates and populates a WebGL buffer with data.
+     * @param {any[]} data Data that will be put into the buffer.
+     * @param {WebGLBuffer | null} bufferId What buffer to put the data into.
+     * @returns {WebGLBuffer} Id of the buffer that the data was put into.
+     */
     function bindBufferData(data, bufferId) {
         var bufferId = bufferId || gl.createBuffer()
         gl.bindBuffer(gl.ARRAY_BUFFER, bufferId)
@@ -57,8 +76,16 @@ function draw() {
     gl.drawArrays(gl.TRIANGLE_FAN, 0, squarePoints.length)
 
     // draw circle
-    bindBufferData(circlePoints, pointsBufferId)
-    bindBufferData(Array(circlePoints.length).fill(vec3(1.0, 1.0, 1.0)), colorBufferId)
+    const circle = circleVertices(100, 0.4, 0, 0)
+    bindBufferData(circle, pointsBufferId)
+    bindBufferData(Array(circle.length).fill(vec3(1.0, 1.0, 1.0)), colorBufferId)
 
-    gl.drawArrays(gl.TRIANGLE_FAN, 0, circlePoints.length)
+    gl.drawArrays(gl.TRIANGLE_FAN, 0, circle.length)
+
+    // draw hexigon
+    const hexigon = circleVertices(6, 0.4, 0, 0)
+    bindBufferData(hexigon, pointsBufferId)
+    bindBufferData(Array(hexigon.length).fill(vec3(24 / 255, 237 / 255, 200 / 255)), colorBufferId)
+
+    gl.drawArrays(gl.LINE_LOOP, 0, hexigon.length)
 }
