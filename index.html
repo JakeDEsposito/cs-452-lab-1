@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>2D Circle</title>
+
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        attribute vec4 myPosition;
+        attribute vec3 myColor;
+
+        varying vec4 color;
+        
+        void main() {
+            color = vec4(myColor, 1.0);
+
+            gl_PointSize = 1.0;
+            gl_Position = myPosition;
+        }
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        precision mediump float;
+
+        varying vec4 color;
+
+        void main() {
+            gl_FragColor = color;
+        }
+    </script>
+
+    <script type="text/javascript" src="../Common/webgl-utils.js"></script>
+    <script type="text/javascript"
+        src="https://www.cs.unm.edu/~angel/BOOK/INTERACTIVE_COMPUTER_GRAPHICS/EIGHTH_EDITION/CODE/Common/initShaders.js"></script>
+    <script type="text/javascript"
+        src="https://www.cs.unm.edu/~angel/BOOK/INTERACTIVE_COMPUTER_GRAPHICS/EIGHTH_EDITION/CODE/Common/MVnew.js"></script>
+
+    <script type="text/javascript" src="./code.js"></script>
+</head>
+
+<body onload="draw()">
+    <canvas id="gl-canvas" width="640" height="480">
+    </canvas>
+</body>
+
+</html>
