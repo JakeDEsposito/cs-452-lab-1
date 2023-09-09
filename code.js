@@ -1,3 +1,6 @@
+// Jake D'Esposito
+// Ethan Arnold
+
 function draw() {
     var canvas = document.getElementById("gl-canvas");
     /** @type {WebGLRenderingContext} */
