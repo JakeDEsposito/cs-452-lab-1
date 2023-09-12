@@ -7,3 +7,7 @@ I wrote the code for drawing the shapes. Also, I wrote code to abstract aspects 
 ## Ethan Arnold
 
 I contributed to implementing the algorithm efficiently. I also helped debug graphical errors. I made sure the ellipse was aspect ratio corrected in coordinate space.
+
+#  GitHub Pages
+
+[Link to live page](https://jakedesposito.github.io/cs-452-lab-1/)
