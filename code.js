@@ -45,14 +45,14 @@ function draw() {
     /**
      * Creates and populates a WebGL buffer with data.
      * @param {any[]} data Data that will be put into the buffer.
-     * @param {WebGLBuffer | null} bufferId What buffer to put the data into.
+     * @param {WebGLBuffer | null} bufferId What buffer to put the data into. Creates a new one if none is provided.
      * @returns {WebGLBuffer} Id of the buffer that the data was put into.
      */
     function bindBufferData(data, bufferId) {
-        var bufferId = bufferId || gl.createBuffer()
-        gl.bindBuffer(gl.ARRAY_BUFFER, bufferId)
+        const _bufferId = bufferId || gl.createBuffer()
+        gl.bindBuffer(gl.ARRAY_BUFFER, _bufferId)
         gl.bufferData(gl.ARRAY_BUFFER, flatten(data), gl.STATIC_DRAW)
-        return bufferId
+        return _bufferId
     }
 
     const squarePoints = [vec2(-1, 0.6), vec2(-1, -0.6), vec2(1, -0.6), vec2(1, 0.6)]
@@ -70,25 +70,23 @@ function draw() {
     gl.vertexAttribPointer(myPosition, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(myPosition);
 
-    const colorBufferId = bindBufferData(Array(squarePoints.length).fill(vec3(1 / 255, 40 / 255, 107 / 255)))
-
-    var myColor = gl.getAttribLocation(myShaderProgram, "myColor");
-    gl.vertexAttribPointer(myColor, 3, gl.FLOAT, false, 0, 0)
-    gl.enableVertexAttribArray(myColor)
+    const colorUniformLocation = gl.getUniformLocation(myShaderProgram, "myColor")
+    
+    gl.uniform3f(colorUniformLocation, 1 / 255, 40 / 255, 107 / 255)
 
     gl.drawArrays(gl.TRIANGLE_FAN, 0, squarePoints.length)
 
     // draw circle
     const circle = circleVertices(100, 0.4, 0, 0)
     bindBufferData(circle, pointsBufferId)
-    bindBufferData(Array(circle.length).fill(vec3(1.0, 1.0, 1.0)), colorBufferId)
+    gl.uniform3f(colorUniformLocation, 1.0, 1.0, 1.0)
 
     gl.drawArrays(gl.TRIANGLE_FAN, 0, circle.length)
 
     // draw hexigon
     const hexigon = circleVertices(6, 0.4, 0, 0)
     bindBufferData(hexigon, pointsBufferId)
-    bindBufferData(Array(hexigon.length).fill(vec3(24 / 255, 237 / 255, 200 / 255)), colorBufferId)
+    gl.uniform3f(colorUniformLocation, 24 / 255, 237 / 255, 200 / 255)
 
     gl.drawArrays(gl.LINE_LOOP, 0, hexigon.length)
 }
